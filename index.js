@@ -4,14 +4,23 @@ let React = require('react');
 let X18N = require('x18n');
 
 class X18NSpanElement extends React.Component {
+
     componentWillMount() {
-        X18N.on(['lang:change', 'dict:change'], this.forceUpdate);
-    };
+       X18N.on(['lang:change', 'dict:change'], () => {
+           debugger;
+           if (this.refs["0"]) {
+               this.forceUpdate()
+           }
+       });
+   };
 
-    componentWillUnmount() {
-        X18N.off(['lang:change', 'dict:change'], this.forceUpdate);
-    };
-
+   componentWillUnmount() {
+       X18N.off(['lang:change', 'dict:change'], () => {
+           if (this.refs["0"]) {
+               this.forceUpdate()
+           }
+       });
+   };
     render() {
         let result = 'error';
         const { isPlural = false, _args = [] } = this.props;
@@ -24,7 +33,7 @@ class X18NSpanElement extends React.Component {
             result = X18N.t.apply(null, this.props._args);
         }
 
-        return React.createElement('span', {}, result);
+        return React.createElement('span', {ref: "0"}, result);
     }
 };
 
