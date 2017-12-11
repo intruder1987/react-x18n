@@ -5,11 +5,20 @@ let X18N = require('x18n');
 
 class X18NSpanElement extends React.Component {
     componentWillMount() {
-        X18N.on(['lang:change', 'dict:change'], () => this.forceUpdate());
+        X18N.on(['lang:change', 'dict:change'], () => {
+            if (this._isMounted) {
+                this.forceUpdate()
+            }
+        }
+    );
     };
 
     componentWillUnmount() {
-        X18N.off(['lang:change', 'dict:change'], () => this.forceUpdate());
+        X18N.off(['lang:change', 'dict:change'], () => {
+            if (this._isMounted) {
+                this.forceUpdate()
+            }
+        });
     };
 
     render() {
